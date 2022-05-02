@@ -13,7 +13,7 @@ class Position(models.Model):
         ordering = ('title',)
 
     def __str__(self):
-        return f"{self.pk} - {self.title}"
+        return f"{self.title}"
 
 
 class Employee(models.Model):
@@ -47,6 +47,7 @@ class Employee(models.Model):
         Position,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name="Должность",
         related_name='employees',
     )
@@ -54,6 +55,7 @@ class Employee(models.Model):
         'self',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name="Начальник",
         related_name='workers'
     )
@@ -63,4 +65,9 @@ class Employee(models.Model):
         verbose_name_plural = "Работники"
 
     def __str__(self):
-        return f"{self.pk} - {self.second_name} {self.first_name} {self.patronymic}"
+        return f"{self.second_name} {self.first_name} {self.patronymic}"
+
+    def delete(self, using=None, keep_parents=False):
+        if self.workers and self.boss:
+            Employee.objects.filter(boss=self).update(boss=self.boss)
+        super().delete(using, keep_parents)

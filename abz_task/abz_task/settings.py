@@ -108,6 +108,8 @@ STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if DEBUG:
+    import mimetypes
+
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
@@ -115,9 +117,6 @@ if DEBUG:
         'debug_toolbar',
     ]
     INTERNAL_IPS = ['127.0.0.1', ]
-
-    # this is the main reason for not showing up the toolbar
-    import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
 
