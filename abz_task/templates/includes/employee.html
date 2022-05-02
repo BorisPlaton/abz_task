@@ -1,0 +1,49 @@
+{% load custom_filters %}
+
+
+<div class="row g-0">
+
+    {% for i in tab|range %}
+        {% if i == tab|add:"-1" %}
+            <div class="col-1 border-start border-bottom">
+            </div>
+        {% else %}
+            <div class="col-1">
+            </div>
+        {% endif %}
+    {% endfor %}
+
+
+    <div class="col-auto">
+        <div class="p-1"></div>
+        <div class="bg-white px-3 p-2 border rounded-end rounded-top">
+            <div class="row">
+
+                <div class="col-auto">
+                    <small class="fw-bold">ФИО:</small>
+                    <div><small>{{ employee.second_name }} {{ employee.first_name }} {{ employee.patronymic }}</small></div>
+                </div>
+
+                <div class="col-auto d-flex flex-column">
+                    <div><small class="fw-bold">Должность:</small></div>
+                    <div><small>{{ employee.position }}</small></div>
+                </div>
+
+                <div class="col-auto">
+                    <div><small class="fw-bold">Зарплата:</small></div>
+                    <div><small>$ {{ employee.payment }}</small></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% for worker in employee.workers.all %}
+
+{% include 'includes/employee.html' with employee=worker tab=tab|add:"1" %}
+
+{% endfor %}
+

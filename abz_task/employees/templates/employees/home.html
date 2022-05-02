@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+{% for worker in employees %}
+
+    {% include 'includes/employee.html' with employee=worker tab=0 %}
+
+{% endfor %}
+
+{% endblock %}
