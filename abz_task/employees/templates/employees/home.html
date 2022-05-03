@@ -1,11 +1,50 @@
 {% extends 'base.html' %}
+{% load mptt_tags %}
 
 {% block content %}
 
-{% for worker in employees %}
+{% recursetree employees %}
 
-    {% include 'includes/employee.html' with employee=worker tab=0 %}
+<div class="row g-0">
 
-{% endfor %}
+    <div class="col-{{ node.level }}">
+    </div>
+
+    <div class="col-auto">
+        <div class="p-1"></div>
+        <a href="" class="link-dark text-decoration-none">
+            <div class="px-3 p-2 border rounded highlighted">
+                <div class="row">
+
+                    <div class="col-auto">
+                        <div>
+                            <small class="fw-bold">ФИО:</small>
+                        </div>
+                        <div>
+                            <small>{{ node.second_name }} {{ node.first_name }} {{ node.patronymic }}</small>
+                        </div>
+                    </div>
+
+                    <div class="col-auto d-flex flex-column">
+                        <div><small class="fw-bold">Должность:</small></div>
+                        <div><small>{{ node.position }}</small></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div><small class="fw-bold">Зарплата:</small></div>
+                        <div><small>$ {{ node.payment }}</small></div>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+{{ children }}
+
+{% endrecursetree %}
 
 {% endblock %}

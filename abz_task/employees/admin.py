@@ -1,17 +1,19 @@
 from django.contrib import admin
 
+from mptt.admin import MPTTModelAdmin
+
 from employees.models import Employee, Position
 
 
 @admin.register(Employee)
-class EmployeeAdmin(admin.ModelAdmin):
+class EmployeeAdmin(MPTTModelAdmin):
     list_display = (
         'first_name',
         'second_name',
         'patronymic',
         'position',
         'payment',
-        'view_boss',
+        'view_parent',
     )
     list_display_links = (
         'first_name',
@@ -21,17 +23,12 @@ class EmployeeAdmin(admin.ModelAdmin):
     search_fields = (
         'first_name',
     )
-    ordering = (
-        'first_name',
-        'second_name',
-        'patronymic',
-    )
 
-    def view_boss(self, obj):
-        return obj.boss
+    def view_parent(self, obj):
+        return obj.parent
 
-    view_boss.empty_value_display = "Без начальник"
-    view_boss.short_description = "Начальник"
+    view_parent.empty_value_display = "Без начальник"
+    view_parent.short_description = "Начальник"
 
     def delete_queryset(self, request, queryset):
         for obj in queryset.all():

@@ -1,0 +1,8 @@
+.highlighted {
+    background: white;
+    transition: all 0.1s ease-out;
+}
+
+.highlighted:hover {
+    background: #f2eee4;
+}

@@ -1,5 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from mptt.models import TreeForeignKey, MPTTModel
+import mptt.templatetags.mptt_tags
 
 
 class Position(models.Model):
@@ -10,13 +12,13 @@ class Position(models.Model):
     class Meta:
         verbose_name = "Должность"
         verbose_name_plural = "Должности"
-        ordering = ('title',)
+        ordering = ['title']
 
     def __str__(self):
         return f"{self.title}"
 
 
-class Employee(models.Model):
+class Employee(MPTTModel):
     """Работник"""
 
     first_name = models.CharField(
@@ -51,7 +53,7 @@ class Employee(models.Model):
         verbose_name="Должность",
         related_name='employees',
     )
-    boss = models.ForeignKey(
+    parent = TreeForeignKey(
         'self',
         on_delete=models.SET_NULL,
         null=True,
@@ -60,14 +62,15 @@ class Employee(models.Model):
         related_name='workers'
     )
 
-    class Meta:
+    class MTTPMeta:
         verbose_name = "Работник"
         verbose_name_plural = "Работники"
+        order_insertion_by = ['name']
 
     def __str__(self):
         return f"{self.second_name} {self.first_name} {self.patronymic}"
 
     def delete(self, using=None, keep_parents=False):
-        if self.workers and self.boss:
-            Employee.objects.filter(boss=self).update(boss=self.boss)
+        if self.workers and self.parent:
+            Employee.objects.filter(parent=self).update(parent=self.parent)
         super().delete(using, keep_parents)
