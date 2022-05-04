@@ -4,6 +4,7 @@
 <div class="p-5 mt-4 rounded bg-light shadow-sm">
     <div class="row">
         <div class="col-lg-4">
+            <img src="{{ employee.employee_photo.url }}" alt="Фото пользователя">
         </div>
 
         <div class="col-lg-8">
@@ -18,7 +19,7 @@
                         <div>
                             <span class="fw-bold">Начальник:</span>
                             {% if employee.parent %}
-                            <a href="{{ parent.get_absolute_url }}" class="text-decoration-none"><span>{{ employee.parent }}</span></a>
+                            <a href="{{ employee.parent.get_absolute_url }}" class="text-decoration-none"><span>{{ employee.parent }}</span></a>
                             {% else %}
                             <span>-</span>
                             {% endif %}
@@ -30,8 +31,8 @@
                         <div>
                             <span class="fw-bold">Дата трудоустройства:</span>
                             <span>
+                            {{ employee.date_employment|date:"G:H:s," }}
                             {{ employee.date_employment|date:"F j, o" }}
-                            <small>{{ employee.date_employment|date:"G:H:s" }}</small>
                             </span>
                         </div>
                         <div>
@@ -40,6 +41,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 

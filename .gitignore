@@ -1,2 +1,4 @@
 .idea
 db.sqlite3
+abz_task/media/photo/*
+!abz_task/media/photo/default.png

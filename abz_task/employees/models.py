@@ -50,6 +50,11 @@ class Employee(MPTTModel):
             )
         ],
     )
+    employee_photo = models.ImageField(
+        "Фото работника",
+        default='photo/default.png',
+        blank=True
+    )
     position = models.ForeignKey(
         Position,
         on_delete=models.SET_NULL,

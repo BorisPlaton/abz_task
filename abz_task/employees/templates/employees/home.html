@@ -5,38 +5,43 @@
 <div class="p-5 mt-4 rounded bg-light shadow-sm">
 
     {% recursetree employees %}
+    <div class="mb-2">
+        <div class="row">
 
-    <div class="row g-0">
+            <div class="col-{{ node.level }}">
+            </div>
 
-        <div class="col-{{ node.level }}">
+            <div class="col-auto">
+                <div class="d-flex upper">
+                    <div class="d-flex align-items-center justify-content-center bg-white p-2 rounded-start">
+                        <img src="{{ node.employee_photo.url }}" alt="" style="height:35px" class="">
+                    </div>
+
+                    <small>
+                        <a href="{{ node.get_absolute_url }}" class="link-dark text-decoration-none">
+                            <table class="table table-secondary table-striped m-0">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ФИO</th>
+                                    <th scope="col">Должность</th>
+                                    <th scope="col">Зарплата</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ node.second_name}} {{ node.first_name }} {{ node.patronymic }}</td>
+                                    <td>{{ node.position.title }}</td>
+                                    <td>${{ node.payment }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </a>
+                    </small>
+                </div>
+            </div>
+
         </div>
-
-        <div class="col-auto">
-            <small>
-                <a href="{{ node.get_absolute_url }}" class="link-dark text-decoration-none">
-                    <table class="table table-secondary table-striped upper">
-                        <thead>
-                        <tr>
-                            <th scope="col">ФИO</th>
-                            <th scope="col">Должность</th>
-                            <th scope="col">Зарплата</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{{ node.second_name}} {{ node.first_name }} {{ node.patronymic }}</td>
-                            <td>{{ node.position.title }}</td>
-                            <td>${{ node.payment }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </a>
-            </small>
-
-        </div>
-
     </div>
-
     {{ children }}
 
     {% endrecursetree %}
