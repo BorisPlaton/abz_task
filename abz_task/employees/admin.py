@@ -22,7 +22,12 @@ class EmployeeAdmin(MPTTModelAdmin):
     )
     search_fields = (
         'first_name',
+        'second_name',
+        'patronymic',
     )
+    prepopulated_fields = {
+        'slug': ['second_name', 'first_name', 'patronymic']
+    }
 
     def view_parent(self, obj):
         return obj.parent

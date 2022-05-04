@@ -1,7 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from mptt.models import TreeForeignKey, MPTTModel
-import mptt.templatetags.mptt_tags
 
 
 class Position(models.Model):
@@ -33,6 +32,11 @@ class Employee(MPTTModel):
         "Отчество",
         max_length=32,
     )
+    slug = models.SlugField(
+        "Slug",
+        max_length=128,
+        unique=True,
+    )
     date_employment = models.DateTimeField(
         "Дата трудоустройства",
     )
@@ -63,9 +67,9 @@ class Employee(MPTTModel):
     )
 
     class MTTPMeta:
+        ordering_insertion_by = ['first_name']
         verbose_name = "Работник"
         verbose_name_plural = "Работники"
-        order_insertion_by = ['name']
 
     def __str__(self):
         return f"{self.second_name} {self.first_name} {self.patronymic}"
@@ -74,3 +78,9 @@ class Employee(MPTTModel):
         if self.workers and self.parent:
             Employee.objects.filter(parent=self).update(parent=self.parent)
         super().delete(using, keep_parents)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.slug += f'-{self.pk}'
+        super(Employee, self).save(*args, **kwargs)
+
