@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-5 mt-4 rounded bg-light shadow-sm">
+    <div class="row">
+        <div class="col-lg-4">
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+
+                <div class="col-auto">
+                    <div class="d-flex flex-column fs-6">
+                        <div class="mb-3 fs-5">
+                            <span class="fw-bold">ФИО:</span>
+                            <span>{{ employee.second_name}} {{ employee.first_name }} {{ employee.patronymic }}</span>
+                        </div>
+                        <div>
+                            <span class="fw-bold">Начальник:</span>
+                            {% if employee.parent %}
+                            <a href="{{ parent.get_absolute_url }}" class="text-decoration-none"><span>{{ employee.parent }}</span></a>
+                            {% else %}
+                            <span>-</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span class="fw-bold">Должность:</span>
+                            <span>{{ employee.position }}</span>
+                        </div>
+                        <div>
+                            <span class="fw-bold">Дата трудоустройства:</span>
+                            <span>
+                            {{ employee.date_employment|date:"F j, o" }}
+                            <small>{{ employee.date_employment|date:"G:H:s" }}</small>
+                            </span>
+                        </div>
+                        <div>
+                            <span class="fw-bold">Зарплата:</span>
+                            <span>${{ employee.payment }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}

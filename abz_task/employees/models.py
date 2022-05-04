@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.urls import reverse
 from mptt.models import TreeForeignKey, MPTTModel
 
 
@@ -84,3 +85,5 @@ class Employee(MPTTModel):
         self.slug += f'-{self.pk}'
         super(Employee, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('employees:employee_details', args=[self.slug])

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from employees.models import Employee
-from employees.services import get_employee_by_slug
+from employees.services import get_employee_by_slug, return_404_if_none
 
 
 def home(request):
@@ -35,10 +35,10 @@ def employees_list(request):
     return render(request, 'employees/employees_list.html', context=context)
 
 
-def employee_details(request, slug):
+def employee_details(request, employee_slug):
     """Страница данных работника"""
 
-    employee = get_employee_by_slug(slug)
+    employee = return_404_if_none(get_employee_by_slug(employee_slug))
     context = {
         'employee': employee,
     }

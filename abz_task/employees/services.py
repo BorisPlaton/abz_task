@@ -24,7 +24,7 @@ def get_employee_by_slug(slug: str) -> Optional[Employee]:
 
     employee = (Employee.objects
                 .select_related('position')
-                .select_related('boss')
+                .select_related('parent')
                 .filter(slug=slug))
 
     if employee.exists():
