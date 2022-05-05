@@ -11,7 +11,7 @@
         </div>
 
         <div class="col">
-            <form action="{% url 'employees:employee_details' employee_slug %}" method="post"
+            <form action="{% url 'employees:edit_employee' employee_slug %}" method="post"
                   enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
 
@@ -21,16 +21,22 @@
                         <div class="d-flex">
                             <span class="fw-bold">Имя:</span>{{ form.first_name }}
                         </div>
+                        {% include 'includes/errors.html' with field=form.first_name %}
+
                     </div>
                     <div class="col-lg-4">
                         <div class="d-flex">
                             <span class="fw-bold">Фамилия:</span>{{ form.second_name }}
                         </div>
+                        {% include 'includes/errors.html' with field=form.second_name %}
+
                     </div>
                     <div class="col-lg-4">
                         <div class="d-flex">
                             <span class="fw-bold">Отчество:</span>{{ form.patronymic }}
                         </div>
+                        {% include 'includes/errors.html' with field=form.patronymic %}
+
                     </div>
 
                     <div class="col-lg-6">
@@ -38,30 +44,39 @@
                             <span class="fw-bold">Дата трудоустройства:</span>
                             <div class="flex-fill pe-2">{{ form.date_employment }}</div>
                         </div>
+                        {% include 'includes/errors.html' with field=form.date_employment %}
+
                     </div>
                     <div class="col-lg-6">
                         <div class="d-flex">
                             <span class="fw-bold">Позиция:</span>
                             {{ form.position }}
                         </div>
+                        {% include 'includes/errors.html' with field=form.position %}
+
                     </div>
                     <div class="col-lg-6">
                         <div class="d-flex">
                             <span class="fw-bold">Начальник:</span>
                             {{ form.parent }}
                         </div>
+                        {% include 'includes/errors.html' with field=form.parent %}
+
                     </div>
                     <div class="col-lg-6">
                         <div class="d-flex">
                             <span class="fw-bold">Зарплата:</span>
                             {{ form.payment }}
                         </div>
+                        {% include 'includes/errors.html' with field=form.payment %}
                     </div>
                     <div class="col-lg-4">
                         <div class="">
                             <p class="file-upload">
+                                <span class="fw-bold">Загрузить новое фото:</span>
                                 {{ form.employee_photo }}
                             </p>
+                            {% include 'includes/errors.html' with field=form.employee_photo %}
                         </div>
                     </div>
                 </div>

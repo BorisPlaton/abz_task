@@ -2,7 +2,9 @@ from typing import Optional, Any
 
 from django.http import Http404
 
+from employees.forms import EmployeeEditForm
 from employees.models import Employee
+from employees.services.images import ProfilePhoto
 
 
 def return_404_if_none(item: Any) -> Any:
@@ -29,3 +31,16 @@ def get_employee_by_slug(slug: str) -> Optional[Employee]:
 
     if employee.exists():
         return employee.first()
+
+
+def save_employee_from_form(form: EmployeeEditForm) -> Employee:
+    """Сохраняет данные пользователя из формы"""
+    
+    employee = form.save()
+    profile_pic = ProfilePhoto(employee.employee_photo.path)
+    profile_pic.get_square_photo()
+    profile_pic.save()
+
+    return employee
+
+

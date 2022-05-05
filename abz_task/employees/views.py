@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 
 from employees.forms import EmployeeEditForm
 from employees.models import Employee
-from employees.services import get_employee_by_slug, return_404_if_none
+from employees.services.urls import return_404_if_none, get_employee_by_slug, save_employee_from_form
 
 
 def home(request):
@@ -50,7 +51,21 @@ def employee_details(request, employee_slug):
 def edit_employee(request, employee_slug):
     """Изменение данных сотрудника"""
 
-    form = EmployeeEditForm(request.POST or None, instance=return_404_if_none(get_employee_by_slug(employee_slug)))
+    if request.POST:
+        form = EmployeeEditForm(
+            request.POST,
+            request.FILES,
+            instance=return_404_if_none(get_employee_by_slug(employee_slug))
+        )
+        if form.is_valid():
+            employee = save_employee_from_form(form)
+            messages.success(request, 'Данные обновлены')
+            return redirect('employees:edit_employee', employee.slug)
+    else:
+        form = EmployeeEditForm(
+            instance=return_404_if_none(get_employee_by_slug(employee_slug))
+        )
+
     context = {
         'form': form,
         'employee_slug': employee_slug,

@@ -10,11 +10,11 @@ class EmployeeEditForm(forms.ModelForm):
             'first_name',
             'second_name',
             'patronymic',
-            'employee_photo',
             'position',
             'parent',
             'date_employment',
             'payment',
+            'employee_photo',
         )
 
     def __init__(self, *args, **kwargs):
