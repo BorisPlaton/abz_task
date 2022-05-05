@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from employees.forms import EmployeeEditForm
 from employees.models import Employee
-from employees.services.urls import return_404_if_none, get_employee_by_slug, save_employee_from_form
+from employees.services.services import return_404_if_none, get_employee_by_slug, save_employee_from_form
 
 
 def home(request):

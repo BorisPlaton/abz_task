@@ -90,7 +90,7 @@ class Employee(MPTTModel):
         super().delete(using, keep_parents)
 
     def save(self, *args, **kwargs):
-        # Проверяем создается ли объект, если так, то устанавливаем уникальный slug
+        # Устанавливаем уникальный slug
         super(Employee, self).save(*args, **kwargs)
         self.slug = slugify(unidecode(f'{self.second_name} {self.first_name} {self.patronymic} {self.pk}'))
         super(Employee, self).save(*args, **kwargs)

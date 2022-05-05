@@ -35,12 +35,12 @@ def get_employee_by_slug(slug: str) -> Optional[Employee]:
 
 def save_employee_from_form(form: EmployeeEditForm) -> Employee:
     """Сохраняет данные пользователя из формы"""
-    
+
     employee = form.save()
-    profile_pic = ProfilePhoto(employee.employee_photo.path)
-    profile_pic.get_square_photo()
-    profile_pic.save()
+    # Меняем только загруженные фотографии
+    if employee.employee_photo != Employee._meta.get_field('employee_photo').default:
+        profile_pic = ProfilePhoto(employee.employee_photo.path)
+        profile_pic.get_square_photo()
+        profile_pic.save()
 
     return employee
-
-
