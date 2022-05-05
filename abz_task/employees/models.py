@@ -1,7 +1,9 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 from mptt.models import TreeForeignKey, MPTTModel
+from unidecode import unidecode
 
 
 class Position(models.Model):
@@ -53,7 +55,6 @@ class Employee(MPTTModel):
     employee_photo = models.ImageField(
         "Фото работника",
         default='photo/default.png',
-        blank=True
     )
     position = models.ForeignKey(
         Position,
@@ -74,6 +75,8 @@ class Employee(MPTTModel):
 
     class MTTPMeta:
         ordering_insertion_by = ['first_name']
+
+    class Meta:
         verbose_name = "Работник"
         verbose_name_plural = "Работники"
 
@@ -86,8 +89,9 @@ class Employee(MPTTModel):
         super().delete(using, keep_parents)
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.slug += f'-{self.pk}'
+        # Проверяем создается ли объект, если так, то устанавливаем уникальный slug
+        super(Employee, self).save(*args, **kwargs)
+        self.slug = slugify(unidecode(f'{self.second_name} {self.first_name} {self.patronymic} {self.pk}'))
         super(Employee, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

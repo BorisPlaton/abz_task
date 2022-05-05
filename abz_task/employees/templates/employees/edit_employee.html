@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-5 mt-4 rounded bg-light shadow-sm">
+    <div class="row row-cols-1">
+
+        <div class="col">
+            <div class="pb-4">
+                <a href="{% url 'employees:employee_details' employee_slug %}" class="link-primary">Обратно</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <form action="{% url 'employees:employee_details' employee_slug %}" method="post"
+                  enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <div class="col-lg-4">
+                        <div class="d-flex">
+                            <span class="fw-bold">Имя:</span>{{ form.first_name }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="d-flex">
+                            <span class="fw-bold">Фамилия:</span>{{ form.second_name }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="d-flex">
+                            <span class="fw-bold">Отчество:</span>{{ form.patronymic }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="d-flex">
+                            <span class="fw-bold">Дата трудоустройства:</span>
+                            <div class="flex-fill pe-2">{{ form.date_employment }}</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="d-flex">
+                            <span class="fw-bold">Позиция:</span>
+                            {{ form.position }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="d-flex">
+                            <span class="fw-bold">Начальник:</span>
+                            {{ form.parent }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="d-flex">
+                            <span class="fw-bold">Зарплата:</span>
+                            {{ form.payment }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="">
+                            <p class="file-upload">
+                                {{ form.employee_photo }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <input type="submit" value="Сохранить" class="btn btn-primary btn-primary-sm">
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

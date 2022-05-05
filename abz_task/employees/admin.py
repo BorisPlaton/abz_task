@@ -7,6 +7,9 @@ from employees.models import Employee, Position
 
 @admin.register(Employee)
 class EmployeeAdmin(MPTTModelAdmin):
+    exclude = (
+        'slug',
+    )
     list_display = (
         'first_name',
         'second_name',
@@ -25,9 +28,11 @@ class EmployeeAdmin(MPTTModelAdmin):
         'second_name',
         'patronymic',
     )
-    prepopulated_fields = {
-        'slug': ['second_name', 'first_name', 'patronymic']
-    }
+
+    def get_readonly_fields(self, request, obj=None):
+        if not obj:
+            return self.readonly_fields
+        return self.readonly_fields + ('slug',)
 
     def view_parent(self, obj):
         return obj.parent
