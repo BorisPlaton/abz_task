@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 
 from employees.forms import EmployeeEditForm
 from employees.models import Employee
-from employees.services.services import return_404_if_none, get_employee_by_slug, save_employee_from_form
+from employees.services.services import return_404_if_none, get_employee_by_slug, save_employee_from_form, \
+    get_employee_by_pk, delete_employee_photo
 
 
 def home(request):
@@ -72,3 +73,12 @@ def edit_employee(request, employee_slug):
     }
 
     return render(request, 'employees/edit_employee.html', context=context)
+
+
+def delete_photo(request, employee_pk):
+    """Удаляет фото работника"""
+
+    employee = return_404_if_none(get_employee_by_pk(employee_pk))
+    delete_employee_photo(employee)
+
+    return redirect(employee.get_absolute_url())

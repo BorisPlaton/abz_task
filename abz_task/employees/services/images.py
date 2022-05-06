@@ -5,6 +5,11 @@ class ProfilePhoto:
     """Класс `ProfilePhoto`, что предоставляет возможность изменения размеров изображения."""
 
     def __init__(self, img_path: str):
+        """
+        Инициализация класса.
+
+        :param img_path: Абсолютный путь к изображению.
+        """
         self.photo_path = img_path
         self.photo = Image.open(self.photo_path)
 
@@ -50,7 +55,7 @@ class ProfilePhoto:
 
         return x1, y1, x2, y2
 
-    def save(self, path: str = None) -> None:
+    def save_photo(self, path: str = None) -> None:
         """
         Сохраняет изображение.
 

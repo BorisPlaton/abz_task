@@ -19,7 +19,7 @@
                 <td class="align-middle">
                     <a href="{{ employee.get_absolute_url }}" class="text-decoration-none">{{ employee.second_name}} {{ employee.first_name }} {{ employee.patronymic }}</a>
                 </td>
-                <td class="align-middle"><img src="{{ employee.employee_photo.url }}" alt="" style="height: 35px;"></td>
+                <td class="align-middle"><img src="{{ employee.employee_photo.url }}" alt="" style="height: 36px; border-radius: 18px;"></td>
                 <td class="align-middle">{{ employee.position.title }}</td>
                 <td class="align-middle">${{ employee.payment }}</td>
                 <td class="align-middle">

@@ -33,14 +33,49 @@ def get_employee_by_slug(slug: str) -> Optional[Employee]:
         return employee.first()
 
 
+def get_employee_by_pk(pk: int) -> Optional[Employee]:
+    """
+    Возвращает работника по его id.
+
+    Возвращает экземпляр класса Employee по id, если такого нет,
+    то возвращает None.
+    """
+
+    employee = (Employee.objects
+                .select_related('position')
+                .select_related('parent')
+                .filter(pk=pk))
+
+    if employee.exists():
+        return employee.first()
+
+
 def save_employee_from_form(form: EmployeeEditForm) -> Employee:
     """Сохраняет данные пользователя из формы"""
 
     employee = form.save()
-    # Меняем только загруженные фотографии
-    if employee.employee_photo != Employee._meta.get_field('employee_photo').default:
-        profile_pic = ProfilePhoto(employee.employee_photo.path)
-        profile_pic.get_square_photo()
-        profile_pic.save()
 
     return employee
+
+
+def change_employee_photo(employee_photo):
+    """Урезает загруженную фотографию работника до разрешенных размеров"""
+
+    # Меняем только загруженные фотографии
+    if employee_photo != Employee._meta.get_field('employee_photo').default:
+        profile_pic = ProfilePhoto(employee_photo.path)
+        profile_pic.get_square_photo()
+        profile_pic.save_photo()
+
+
+def delete_employee_photo(employee) -> None:
+    """
+    Удаляет фото работника.
+
+    Если это не стандартное фото, то удаляет его и ставит фото по умолчанию,
+    иначе ничего не делает.
+    """
+
+    if employee.employee_photo != Employee._meta.get_field('employee_photo').default:
+        employee.employee_photo = Employee._meta.get_field('employee_photo').default
+        employee.save()
