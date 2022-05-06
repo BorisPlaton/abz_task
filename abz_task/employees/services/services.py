@@ -1,5 +1,6 @@
 from typing import Optional, Any
 
+from django.db.models import QuerySet, Q
 from django.http import Http404
 
 from employees.forms import EmployeeEditForm
@@ -8,7 +9,7 @@ from employees.services.images import ProfilePhoto
 
 
 def return_404_if_none(item: Any) -> Any:
-    """Проверяет, что item есть и возвращает его, иначе вызывает 404 ошибку"""
+    """Проверяет, что `item` есть и возвращает его, иначе вызывает 404 ошибку"""
 
     if not item:
         raise Http404
@@ -16,38 +17,43 @@ def return_404_if_none(item: Any) -> Any:
     return item
 
 
-def get_employee_by_slug(slug: str) -> Optional[Employee]:
+def get_employee_by(params: dict) -> Optional[Employee]:
     """
-    Возвращает работника по slug'у.
+    Возвращает работника по параметрам `params`.
 
-    Возвращает экземпляр класса Employee по slug'y, если такого нет,
-    то возвращает None.
-    """
-
-    employee = (Employee.objects
-                .select_related('position')
-                .select_related('parent')
-                .filter(slug=slug))
-
-    if employee.exists():
-        return employee.first()
-
-
-def get_employee_by_pk(pk: int) -> Optional[Employee]:
-    """
-    Возвращает работника по его id.
-
-    Возвращает экземпляр класса Employee по id, если такого нет,
-    то возвращает None.
+    :param params: Словарь с полем и его значением, по которому
+        осуществляется поиск.
     """
 
     employee = (Employee.objects
                 .select_related('position')
                 .select_related('parent')
-                .filter(pk=pk))
+                .filter(**params))
 
     if employee.exists():
         return employee.first()
+
+
+def get_employees_by_keyword(keyword: str) -> Optional[QuerySet]:
+    """
+    Возвращает `QuerySet` из работников, у которых поле совпадает
+    со значением `keyword`.
+    """
+
+    if not keyword:
+        return Employee.objects.select_related('position').select_related('parent').all()
+
+    return (Employee.objects
+            .select_related('position')
+            .select_related('parent')
+            .filter(Q(first_name__icontains=keyword) |
+                    Q(second_name__icontains=keyword) |
+                    Q(patronymic__icontains=keyword) |
+                    Q(date_employment__icontains=keyword) |
+                    Q(payment__icontains=keyword) |
+                    Q(position__title__icontains=keyword)).all()
+            )
+
 
 
 def save_employee_from_form(form: EmployeeEditForm) -> Employee:

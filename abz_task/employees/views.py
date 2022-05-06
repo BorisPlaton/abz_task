@@ -3,8 +3,7 @@ from django.shortcuts import render, redirect
 
 from employees.forms import EmployeeEditForm
 from employees.models import Employee
-from employees.services.services import return_404_if_none, get_employee_by_slug, save_employee_from_form, \
-    get_employee_by_pk, delete_employee_photo
+import employees.services.services as sv
 
 
 def home(request):
@@ -13,40 +12,32 @@ def home(request):
     employees = (Employee.objects
                  .select_related('position')
                  .all())
-    context = {
-        'employees': employees,
-    }
 
-    return render(
-        request,
-        'employees/home.html',
-        context=context,
-    )
+    return render(request, 'employees/home.html',
+                  {
+                      'employees': employees,
+                  })
 
 
 def employees_list(request):
     """Список всех сотрудников"""
 
-    employees = (Employee.objects
-                 .select_related('position')
-                 .select_related('parent')
-                 .all())
-    context = {
-        'employees': employees,
-    }
-
-    return render(request, 'employees/employees_list.html', context=context)
+    employees = sv.get_employees_by_keyword(request.GET.get('keyword'))
+    return render(request, 'employees/employees_list.html',
+                  {
+                      'employees': employees,
+                  })
 
 
 def employee_details(request, employee_slug):
     """Данных работника"""
 
-    employee = return_404_if_none(get_employee_by_slug(employee_slug))
-    context = {
-        'employee': employee,
-    }
+    employee = sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
 
-    return render(request, 'employees/employee_details.html', context=context)
+    return render(request, 'employees/employee_details.html',
+                  {
+                      'employee': employee,
+                  })
 
 
 def edit_employee(request, employee_slug):
@@ -56,29 +47,28 @@ def edit_employee(request, employee_slug):
         form = EmployeeEditForm(
             request.POST,
             request.FILES,
-            instance=return_404_if_none(get_employee_by_slug(employee_slug))
+            instance=sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
         )
         if form.is_valid():
-            employee = save_employee_from_form(form)
+            employee = sv.save_employee_from_form(form)
             messages.success(request, 'Данные обновлены')
             return redirect('employees:edit_employee', employee.slug)
     else:
         form = EmployeeEditForm(
-            instance=return_404_if_none(get_employee_by_slug(employee_slug))
+            instance=sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
         )
 
-    context = {
-        'form': form,
-        'employee_slug': employee_slug,
-    }
-
-    return render(request, 'employees/edit_employee.html', context=context)
+    return render(request, 'employees/edit_employee.html',
+                  {
+                      'form': form,
+                      'employee_slug': employee_slug,
+                  })
 
 
 def delete_photo(request, employee_pk):
     """Удаляет фото работника"""
 
-    employee = return_404_if_none(get_employee_by_pk(employee_pk))
-    delete_employee_photo(employee)
+    employee = sv.return_404_if_none(sv.get_employee_by({'pk': employee_pk}))
+    sv.delete_employee_photo(employee)
 
     return redirect(employee.get_absolute_url())

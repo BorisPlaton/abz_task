@@ -75,7 +75,7 @@ class Employee(MPTTModel):
     )
 
     class MTTPMeta:
-        ordering_insertion_by = ['first_name']
+        ordering_insertion_by = ['first_name', 'second_name', 'patronymic']
 
     class Meta:
         verbose_name = "Работник"

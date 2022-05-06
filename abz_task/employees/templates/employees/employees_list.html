@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% include 'includes/search_bar.html' %}
+
+{% if employees %}
 <div class="mt-4">
-    <table class="table table-secondary table-striped">
+    <table class="table table-light table-striped shadow-sm">
         <thead>
         <tr>
-            <th scope="col">ФИO</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
             <th scope="col">Фото</th>
             <th scope="col">Должность</th>
             <th scope="col">Зарплата</th>
@@ -15,23 +21,40 @@
         </thead>
         <tbody>
         {% for employee in employees %}
-            <tr>
-                <td class="align-middle">
-                    <a href="{{ employee.get_absolute_url }}" class="text-decoration-none">{{ employee.second_name}} {{ employee.first_name }} {{ employee.patronymic }}</a>
-                </td>
-                <td class="align-middle"><img src="{{ employee.employee_photo.url }}" alt="" style="height: 36px; border-radius: 18px;"></td>
-                <td class="align-middle">{{ employee.position.title }}</td>
-                <td class="align-middle">${{ employee.payment }}</td>
-                <td class="align-middle">
-                    {{ employee.date_employment|date:"F j, o" }}
-                    <br>
-                    <small>{{ employee.date_employment|date:"G:H:s" }}</small>
-                </td>
-                <td class="align-middle">{% if employee.parent %}{{ employee.parent }}{% else %} - {% endif %}
-                </td>
-            </tr>
+        <tr>
+            <td class="align-middle">
+                <a href="{{ employee.get_absolute_url }}" class="text-decoration-none">{{ employee.second_name}}</a>
+            </td>
+            <td class="align-middle">
+                <a href="{{ employee.get_absolute_url }}" class="text-decoration-none">{{ employee.first_name }}</a>
+            </td>
+            <td class="align-middle">
+                <a href="{{ employee.get_absolute_url }}" class="text-decoration-none">{{ employee.patronymic }}</a>
+            </td>
+            <td class="align-middle"><img src="{{ employee.employee_photo.url }}" alt=""
+                                          style="height: 36px; border-radius: 18px;"></td>
+            <td class="align-middle">{{ employee.position.title }}</td>
+            <td class="align-middle">${{ employee.payment }}</td>
+            <td class="align-middle">
+                {{ employee.date_employment|date:"F j, o" }}
+                <br>
+                <small>{{ employee.date_employment|date:"G:H:s" }}</small>
+            </td>
+            <td class="align-middle">
+                {% if employee.parent %}
+                <a href="{{ employee.parent.get_absolute_url }}">{{employee.parent }}</a>
+                {% else %}
+                -
+                {% endif %}
+            </td>
+        </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
+{% else %}
+<div class="p-4 mt-4 rounded bg-light shadow-sm">
+    <small class="text-secondary">Здесь пока ничего нет</small>
+</div>
+{% endif %}
 {% endblock %}
