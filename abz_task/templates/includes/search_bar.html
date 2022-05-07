@@ -5,7 +5,7 @@
 
                 <div class="col-lg-3 col">
                     <input type="text" class="form-control form-control-sm shadow-sm" placeholder="Поиск"
-                           name="keyword">
+                           name="keyword" value="{{ options.keyword }}">
                 </div>
 
                 <div class="col-auto">
@@ -19,33 +19,33 @@
                         <div class="row text-secondary g-3">
                             <div class="col-auto">
                                 <input type="checkbox" class="form-check-input me-1" placeholder="Поиск"
-                                       name="first_name">
+                                       name="first_name" {% if options.first_name %} checked {% endif %}>
                                 <small>Имя</small>
                             </div>
 
                             <div class="col-auto">
-                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="second_name">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="second_name" {% if options.second_name %} checked {% endif %}>
                                 <small>Фамилия</small>
                             </div>
 
                             <div class="col-auto">
-                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="patronymic">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="patronymic" {% if options.patronymic %} checked {% endif %}>
                                 <small>Отчество</small>
                             </div>
 
                             <div class="col-auto">
-                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="payment">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="payment" {% if options.payment %} checked {% endif %}>
                                 <small>Зарплата</small>
                             </div>
 
                             <div class="col-auto">
-                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="parent__second_name">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="parent__second_name" {% if options.parent__second_name %} checked {% endif %}>
                                 <small>Начальник</small>
                             </div>
 
                             <div class="col-auto">
                                 <input type="checkbox" class="form-check-input " placeholder="Поиск"
-                                       name="date_employment">
+                                       name="date_employment" {% if options.date_employment %} checked {% endif %}>
                                 <small>Дата приема на работу</small>
                             </div>
 

@@ -98,7 +98,7 @@ def delete_employee_photo(employee) -> None:
         employee.save()
 
 
-def collect_search_bar_info(request) -> tuple[str, list[str]]:
+def collect_search_bar_info(request) -> dict[str]:
     """
     Возвращает значение параметров из строки url после поиска сотрудника.
 
@@ -106,6 +106,7 @@ def collect_search_bar_info(request) -> tuple[str, list[str]]:
     """
 
     fields_name = [
+        'keyword',
         'first_name',
         'second_name',
         'patronymic',
@@ -114,11 +115,8 @@ def collect_search_bar_info(request) -> tuple[str, list[str]]:
         'date_employment',
     ]
 
-    keyword = request.get('keyword', '')
-
-    fields_sort = [field_name for field_name in fields_name if request.get(field_name)]
-
-    return keyword, fields_sort
+    options = {field_name: request.get(field_name, '') for field_name in fields_name}
+    return options
 
 
 def sort_by_field_options(models: QuerySet, fields: list[str]) -> QuerySet:

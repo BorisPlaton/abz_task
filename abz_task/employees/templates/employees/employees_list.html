@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% include 'includes/search_bar.html' %}
+{% include 'includes/search_bar.html' with options=options %}
 
 {% if employees %}
 <div class="mt-4">
@@ -57,4 +57,9 @@
     <small class="text-secondary">Здесь пока ничего нет</small>
 </div>
 {% endif %}
+
+<div class="mt-4">
+    {% include 'includes/pagination.html' with paginator=employees current_page=employees.number params=options %}
+</div>
+
 {% endblock %}
