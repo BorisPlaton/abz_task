@@ -22,7 +22,12 @@ def home(request):
 def employees_list(request):
     """Список всех сотрудников"""
 
-    employees = sv.get_employees_by_keyword(request.GET.get('keyword'))
+    keyword, options = sv.collect_search_bar_info(request.GET)
+    employees = sv.sort_by_field_options(
+        sv.get_employees_by_keyword(keyword),
+        options
+    )
+
     return render(request, 'employees/employees_list.html',
                   {
                       'employees': employees,

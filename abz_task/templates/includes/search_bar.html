@@ -2,12 +2,57 @@
     <div class="p-4 mt-4 rounded bg-light shadow-sm">
         <form action="{% url 'employees:employees_list' %}" method="get">
             <div class="row g-2">
-                <div class="col-3">
-                    <input type="text" class="form-control form-control-sm" placeholder="Поиск" name="keyword">
+
+                <div class="col-lg-3 col">
+                    <input type="text" class="form-control form-control-sm shadow-sm" placeholder="Поиск"
+                           name="keyword">
                 </div>
+
                 <div class="col-auto">
                     <button type="submit" class="btn btn-outline-primary btn-sm"><small></small>Искать</button>
                 </div>
+
+                <div class="col-12">
+                    <div class="rounded border bg-white p-2 mt-2 shadow-sm">
+                        <h5 class="fs-6">Сортировать по:</h5>
+
+                        <div class="row text-secondary g-3">
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input me-1" placeholder="Поиск"
+                                       name="first_name">
+                                <small>Имя</small>
+                            </div>
+
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="second_name">
+                                <small>Фамилия</small>
+                            </div>
+
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="patronymic">
+                                <small>Отчество</small>
+                            </div>
+
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="payment">
+                                <small>Зарплата</small>
+                            </div>
+
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="parent__second_name">
+                                <small>Начальник</small>
+                            </div>
+
+                            <div class="col-auto">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск"
+                                       name="date_employment">
+                                <small>Дата приема на работу</small>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </form>
     </div>

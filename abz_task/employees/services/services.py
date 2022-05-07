@@ -38,6 +38,8 @@ def get_employees_by_keyword(keyword: str) -> Optional[QuerySet]:
     """
     Возвращает `QuerySet` из работников, у которых поле совпадает
     со значением `keyword`.
+
+    :param keyword: Строка, по которой ищутся совпадения в полях записи.
     """
 
     if not keyword:
@@ -55,17 +57,24 @@ def get_employees_by_keyword(keyword: str) -> Optional[QuerySet]:
             )
 
 
-
 def save_employee_from_form(form: EmployeeEditForm) -> Employee:
-    """Сохраняет данные пользователя из формы"""
+    """
+    Сохраняет данные пользователя из формы.
+
+    :param form: экземпляр `EmployeeEditForm` класса.
+    """
 
     employee = form.save()
 
     return employee
 
 
-def change_employee_photo(employee_photo):
-    """Урезает загруженную фотографию работника до разрешенных размеров"""
+def change_employee_photo(employee_photo: str) -> None:
+    """
+    Урезает загруженную фотографию работника до разрешенных размеров.
+
+    :param employee_photo: Название фотографии.
+    """
 
     # Меняем только загруженные фотографии
     if employee_photo != Employee._meta.get_field('employee_photo').default:
@@ -80,8 +89,45 @@ def delete_employee_photo(employee) -> None:
 
     Если это не стандартное фото, то удаляет его и ставит фото по умолчанию,
     иначе ничего не делает.
+
+    :param employee: экземпляр `Employee` класса.
     """
 
     if employee.employee_photo != Employee._meta.get_field('employee_photo').default:
         employee.employee_photo = Employee._meta.get_field('employee_photo').default
         employee.save()
+
+
+def collect_search_bar_info(request) -> tuple[str, list[str]]:
+    """
+    Возвращает значение параметров из строки url после поиска сотрудника.
+
+    :param request: `GET` запрос.
+    """
+
+    fields_name = [
+        'first_name',
+        'second_name',
+        'patronymic',
+        'payment',
+        'parent__second_name',
+        'date_employment',
+    ]
+
+    keyword = request.get('keyword', '')
+
+    fields_sort = [field_name for field_name in fields_name if request.get(field_name)]
+
+    return keyword, fields_sort
+
+
+def sort_by_field_options(models: QuerySet, fields: list[str]) -> QuerySet:
+    """
+    Сортирует `models` по полям `options` в порядке возрастания.
+
+    :param models: `Queryset`.
+    :param fields: поля, по которым нужно отсортировать `models`. Сортировка
+        происходит в той последовательности, в которой лежат названия полей.
+    """
+
+    return models.order_by(*fields).all()
