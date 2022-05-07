@@ -88,6 +88,7 @@ class Employee(MPTTModel):
         if self.workers and self.parent:
             Employee.objects.filter(parent=self).update(parent=self.parent)
         super().delete(using, keep_parents)
+        Employee.objects.rebuild()
 
     def save(self, *args, **kwargs):
         # Устанавливаем уникальный slug

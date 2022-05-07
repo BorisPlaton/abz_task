@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'mptt',
 
     'employees.apps.EmployeesConfig',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -90,6 +91,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_REDIRECT_URL = 'employees:home'
+LOGOUT_REDIRECT_URL = 'accounts:login'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

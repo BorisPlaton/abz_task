@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="p-4 mt-4 rounded bg-light shadow-sm">
-
+    {% if employees %}
     {% recursetree employees %}
     <div class="mb-2">
         <div class="row">
@@ -14,7 +14,8 @@
             <div class="col-auto">
                 <div class="d-flex upper">
                     <div class="d-flex align-items-center justify-content-center bg-white p-2 rounded-start">
-                        <img src="{{ node.employee_photo.url }}" alt="" style="height:36px; border-radius: 18px;" class="">
+                        <img src="{{ node.employee_photo.url }}" alt="" style="height:36px; border-radius: 18px;"
+                             class="">
                     </div>
 
                     <small>
@@ -46,5 +47,8 @@
 
     {% endrecursetree %}
 
+    {% else %}
+        <small class="text-secondary">Здесь пока ничего нет</small>
+    {% endif %}
 </div>
 {% endblock %}
