@@ -130,3 +130,14 @@ def sort_by_field_options(models: QuerySet, fields: list[str]) -> QuerySet:
     """
 
     return models.order_by(*fields).all()
+
+
+def delete_employee(employee_pk: int) -> bool:
+    """
+    Удаляет экземпляр модели `Employee`.
+
+    Возвращает True, если модель была удалена, иначе False.
+
+    :param employee_pk: поле `primary key` записи.
+    """
+

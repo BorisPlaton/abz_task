@@ -77,9 +77,29 @@ def edit_employee(request, employee_slug):
 
 @login_required
 def delete_photo(request, employee_pk):
-    """Удаляет фото работника"""
+    """
+    Удаляет фото работника.
+
+    :param employee_pk: id экземпляра.
+    """
 
     employee = sv.return_404_if_none(sv.get_employee_by({'pk': employee_pk}))
     sv.delete_employee_photo(employee)
 
     return redirect(employee.get_absolute_url())
+
+
+@login_required
+def delete_employee(request, employee_pk):
+    """
+    Удаление экземпляра модели `Employee`.
+
+    :param employee_pk: id экземпляра.
+    """
+
+    is_deleted = delete_employee(employee_pk)
+
+    if is_deleted:
+        pass
+
+    return redirect('employees:employees_list')

@@ -9,6 +9,7 @@ django-debug-toolbar = "*"
 django-mptt = "*"
 pillow = "*"
 unidecode = "*"
+faker = "*"
 
 [dev-packages]
 

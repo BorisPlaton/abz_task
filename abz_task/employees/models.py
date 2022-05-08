@@ -93,8 +93,7 @@ class Employee(MPTTModel):
     def save(self, *args, **kwargs):
         # Устанавливаем уникальный slug
         super(Employee, self).save(*args, **kwargs)
-        self.slug = slugify(unidecode(f'{self.second_name} {self.first_name} {self.patronymic} {self.pk}'))
-        super(Employee, self).save(*args, **kwargs)
+        Employee.objects.filter(pk=self.pk).update(slug=slugify(unidecode(f'{self.second_name} {self.first_name} {self.patronymic} {self.pk}')))
 
     def get_absolute_url(self):
         return reverse('employees:employee_details', args=[self.slug])
