@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
@@ -48,6 +49,7 @@ def employee_details(request, employee_slug):
                   })
 
 
+@login_required
 def edit_employee(request, employee_slug):
     """Изменение данных сотрудника"""
 
@@ -73,6 +75,7 @@ def edit_employee(request, employee_slug):
                   })
 
 
+@login_required
 def delete_photo(request, employee_pk):
     """Удаляет фото работника"""
 

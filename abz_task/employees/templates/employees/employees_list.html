@@ -33,7 +33,9 @@
             </td>
             <td class="align-middle"><img src="{{ employee.employee_photo.url }}" alt=""
                                           style="height: 36px; border-radius: 18px;"></td>
-            <td class="align-middle">{{ employee.position.title }}</td>
+            <td class="align-middle">
+                {% if employee.position %}{{ employee.position }}{% else %}-{% endif %}
+            </td>
             <td class="align-middle">${{ employee.payment }}</td>
             <td class="align-middle">
                 {{ employee.date_employment|date:"F j, o" }}

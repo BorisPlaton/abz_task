@@ -110,6 +110,7 @@ def collect_search_bar_info(request) -> dict[str]:
         'first_name',
         'second_name',
         'patronymic',
+        'position__title',
         'payment',
         'parent__second_name',
         'date_employment',

@@ -5,8 +5,18 @@ from django.views import View
 from accounts.forms import CustomUserCreationForm
 
 
-class RegisterView(View):
+class AnonymousRequiredMixin(View):
+    redirect_to = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(self.redirect_to)
+        return super(AnonymousRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class RegisterView(AnonymousRequiredMixin, View):
     template_name = 'registration/register.html'
+    redirect_to = 'employees:home'
 
     def get(self, request, *args, **kwargs):
         context = {

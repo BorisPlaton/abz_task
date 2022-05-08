@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="p-5 mt-4 rounded bg-light shadow-sm">
-    <form action="{% url 'accounts:register' %}" method="post">
+    <form action="{% url 'accounts:register' %}" method="post" novalidate>
         {% csrf_token %}
 
         {{ form.as_p }}

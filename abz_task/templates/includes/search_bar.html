@@ -34,6 +34,11 @@
                             </div>
 
                             <div class="col-auto">
+                                <input type="checkbox" class="form-check-input " placeholder="Поиск" name="position__title" {% if options.position__title %} checked {% endif %}>
+                                <small>Должность</small>
+                            </div>
+
+                            <div class="col-auto">
                                 <input type="checkbox" class="form-check-input " placeholder="Поиск" name="payment" {% if options.payment %} checked {% endif %}>
                                 <small>Зарплата</small>
                             </div>

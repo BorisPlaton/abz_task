@@ -4,17 +4,17 @@
 
 <!-- Modal -->
 <div class="modal fade" id="deletePhotoModal" tabindex="-1" aria-labelledby="deletePhotoModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        Вы точно хотите удалить фото?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
-        <a href="{% url 'employees:delete_photo' employee.id %}" class="btn btn-danger btn-sm">Удалить</a>
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                Вы точно хотите удалить фото?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+                <a href="{% url 'employees:delete_photo' employee.id %}" class="btn btn-danger btn-sm">Удалить</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -43,7 +43,13 @@
                     </div>
                     <div>
                         <span class="fw-bold">Должность:</span>
-                        <span>{{ employee.position }}</span>
+                        <span>
+                            {% if employee.position %}
+                                {{ employee.position }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </span>
                     </div>
                     <div>
                         <span class="fw-bold">Дата трудоустройства:</span>
@@ -57,14 +63,17 @@
                         <span>${{ employee.payment }}</span>
                     </div>
                 </div>
+                {% if request.user.is_authenticated %}
                 <div class="col-12">
                     <a href="{% url 'employees:edit_employee' employee.slug %}" class="btn btn-primary">Изменить</a>
                     {% if employee.employee_photo != default_employee_image %}
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePhotoModal">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#deletePhotoModal">
                         Удалить фото
                     </button>
                     {% endif %}
                 </div>
+                {% endif %}
 
             </div>
         </div>
