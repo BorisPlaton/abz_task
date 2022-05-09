@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
-from employees.forms import EmployeeEditForm
+from employees.forms import EmployeeEditForm, EditPositionForm
 from employees.models import Employee, Position
 import employees.services.services as sv
 
@@ -44,7 +43,7 @@ def employee_details(request, employee_slug):
     :param employee_slug: `Slug` конкретного работника.
     """
 
-    employee = sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
+    employee = sv.return_404_if_none(sv.get_by(Employee, {'slug': employee_slug}, ['parent', 'position']))
 
     return render(request, 'employees/employee_details.html',
                   {
@@ -78,7 +77,7 @@ def edit_employee(request, employee_slug):
 
     form = EmployeeEditForm(
         request.POST or None, request.FILES or None,
-        instance=sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
+        instance=sv.return_404_if_none(sv.get_by(Employee, {'slug': employee_slug}, ['parent', 'position']))
     )
 
     if form.is_valid():
@@ -102,7 +101,7 @@ def delete_photo(request, employee_pk):
     :param employee_pk: id экземпляра.
     """
 
-    employee = sv.return_404_if_none(sv.get_employee_by({'pk': employee_pk}))
+    employee = sv.return_404_if_none(sv.get_by(Employee, {'pk': employee_pk}, ['parent', 'position']))
     sv.delete_employee_photo(employee)
 
     return redirect(employee.get_absolute_url())
@@ -130,3 +129,29 @@ def positions_list(request):
                   {
                       'positions': sv.get_model_paginator(Position, request.GET.get('page', 1), 100)
                   })
+
+
+def position_details(request, position_pk):
+    """Страница должности"""
+
+    position = sv.return_404_if_none(sv.get_by(Position, {'pk': position_pk}))
+    form = EditPositionForm(request.POST or None, instance=position)
+
+    if form.is_valid():
+        position = form.save()
+        return redirect(position.get_absolute_url())
+
+    return render(request, 'employees/position_details.html',
+                  {
+                      'position': position,
+                      'form': form,
+                  })
+
+
+@login_required
+def delete_position(request, position_pk):
+    sv.return_404_if_none(sv.delete_record_by_pk(Position, position_pk))
+
+    messages.success(request, 'Должность была удалена')
+
+    return redirect('employees:home')

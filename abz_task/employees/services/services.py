@@ -18,21 +18,28 @@ def return_404_if_none(item: Any) -> Any:
     return item
 
 
-def get_employee_by(params: dict) -> Optional[Employee]:
+def get_by(model: ModelBase, params: dict, join_models: list = None) -> Optional[ModelBase]:
     """
-    Возвращает работника по параметрам `params`.
+    Возвращает экземпляр модели `model` по параметрам `params`.
 
+    :param model: Модель, в которой происходит поиск записи.
     :param params: Словарь с полем и его значением, по которому
         осуществляется поиск.
+    :param join_models: Модели, которые надо присоединить к записи.
     """
 
-    employee = (Employee.objects
-                .select_related('position')
-                .select_related('parent')
-                .filter(**params))
+    record = model.objects.filter(**params)
 
-    if employee.exists():
-        return employee.first()
+    if not record.exists():
+        return
+
+    if not join_models:
+        return record.first()
+
+    for model in join_models:
+        record = record.select_related(model)
+
+    return record.first()
 
 
 def get_employees_by_keyword(keyword: str) -> Optional[QuerySet]:
@@ -66,7 +73,6 @@ def save_employee_from_form(form: EmployeeEditForm, commit: bool = True) -> Empl
     :param commit: Передается в `save()` метод.
     """
 
-    print(commit)
     employee = form.save(commit)
 
     return employee
@@ -167,3 +173,21 @@ def get_positions() -> QuerySet:
     """Возвращает все должности из базы данных"""
 
     return Position.objects.all()
+
+
+def delete_record_by_pk(model: ModelBase, pk: int) -> bool:
+    """
+    Удаляет запись из модели `model` по параметру `pk`.
+
+    :param model: Модель из которой удаляют запись.
+    :param pk: `id`, `primary key` модели.
+    """
+
+    record = model.objects.filter(pk=pk)
+
+    if not record.exists():
+        return False
+
+    record.delete()
+    return True
+

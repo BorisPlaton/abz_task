@@ -16,6 +16,9 @@ class Position(models.Model):
         verbose_name_plural = "Должности"
         ordering = ['title']
 
+    def get_absolute_url(self):
+        return reverse('employees:position_details', args=[self.pk])
+
     def __str__(self):
         return f"{self.title}"
 

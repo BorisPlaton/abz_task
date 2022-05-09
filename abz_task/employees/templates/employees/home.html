@@ -31,7 +31,7 @@
                                 <tbody>
                                 <tr>
                                     <td>{{ node.second_name}} {{ node.first_name }} {{ node.patronymic }}</td>
-                                    <td>{{ node.position.title }}</td>
+                                    <td>{% if node.position %} {{ node.position.title }} {% else %} - {% endif %}</td>
                                     <td>${{ node.payment }}</td>
                                 </tr>
                                 </tbody>
