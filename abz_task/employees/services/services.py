@@ -1,10 +1,12 @@
-from typing import Optional, Any
+from typing import Optional, Any, Union
 
-from django.db.models import QuerySet, Q
+from django.core.paginator import Paginator
+from django.db.models import QuerySet, Q, Model
+from django.db.models.base import ModelBase
 from django.http import Http404
 
 from employees.forms import EmployeeEditForm
-from employees.models import Employee
+from employees.models import Employee, Position
 
 
 def return_404_if_none(item: Any) -> Any:
@@ -143,3 +145,25 @@ def delete_employee(employee_pk: int) -> bool:
         return True
 
     return False
+
+
+def get_model_paginator(model: Union[QuerySet, ModelBase], page_num: int, records_per_page: int) -> Paginator:
+    """
+    Возвращает объект `Paginator` модели `model`.
+
+    :param model: Объект `QuerySet` или `ModelBase`, от которого получают `Paginator`.
+    :param page_num: Номер страницы.
+    :param records_per_page: Количество записей на одной странице.
+    """
+
+    if isinstance(model, ModelBase):
+        model = model.objects.all()
+
+    paginator = Paginator(model, records_per_page).get_page(page_num)
+    return paginator
+
+
+def get_positions() -> QuerySet:
+    """Возвращает все должности из базы данных"""
+
+    return Position.objects.all()

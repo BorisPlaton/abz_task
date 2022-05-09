@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from employees.forms import EmployeeEditForm
-from employees.models import Employee
+from employees.models import Employee, Position
 import employees.services.services as sv
 
 
@@ -29,11 +29,10 @@ def employees_list(request):
         sv.get_employees_by_keyword(options.get('keyword')),
         [option for option in options if (options[option] and option != 'keyword')]
     )
-    paginator = Paginator(employees, 100).get_page(request.GET.get('page', 1))
 
     return render(request, 'employees/employees_list.html',
                   {
-                      'employees': paginator,
+                      'employees': sv.get_model_paginator(employees, request.GET.get('page', 1), 100),
                       'options': options,
                   })
 
@@ -122,3 +121,12 @@ def delete_employee(request, employee_pk):
     messages.success(request, 'Работник был удалён')
 
     return redirect('employees:home')
+
+
+def positions_list(request):
+    """Показывает все существующие должности"""
+
+    return render(request, 'employees/positions_list.html',
+                  {
+                      'positions': sv.get_model_paginator(Position, request.GET.get('page', 1), 100)
+                  })

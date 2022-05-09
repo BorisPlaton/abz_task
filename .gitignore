@@ -2,3 +2,4 @@
 db.sqlite3
 abz_task/media/photo/*
 !abz_task/media/photo/default.png
+__pycache__

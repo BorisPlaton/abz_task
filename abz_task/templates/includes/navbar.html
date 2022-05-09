@@ -1,34 +1,32 @@
 <section>
     <div class="container">
         <div class="rounded bg-light mt-4 p-4 shadow-sm">
+
             <div class="row g-2">
 
-                <div class="col-lg-auto col-12"><a href="{% url 'employees:home' %}" class="link-dark">Главная
-                    страница</a></div>
+                <div class="col-lg-auto col-12">
+                    <a href="{% url 'employees:home' %}" class="link-primary text-decoration-none">Главная страница</a></div>
                 <div class="col-lg-auto">
                     <span class="d-lg-flex d-none fw-light">|</span>
                 </div>
                 <div class="col-lg-auto col-12">
-                    <a href="{% url 'employees:employees_list' %}" class="link-dark">Список всех сотрудников</a>
+                    <a href="{% url 'employees:employees_list' %}" class="link-primary text-decoration-none">Список сотрудников</a>
                 </div>
-                {% if request.user.is_authenticated %}
                 <div class="col-lg-auto">
                     <span class="d-lg-flex d-none fw-light">|</span>
                 </div>
                 <div class="col-lg-auto col-12">
-                    <a href="{% url 'employees:create_employee' %}" class="link-dark">Добавить работника</a></div>
+                    <a href="{% url 'employees:positions_list' %}" class="link-primary text-decoration-none">Список должностей</a>
+                </div>
+
                 <div class="col"></div>
-                {% else %}
-                <div class="col">
-                </div>
-                {% endif %}
 
                 <div class="col-lg-auto col-12">
                     <div class="d-flex">
                         {% if request.user.is_authenticated %}
                             <span>{{ request.user }}</span>
                             <span class="mx-2 fw-light">|</span>
-                            <a href="{% url 'accounts:logout' %}" class="link-dark"><i class="bi bi-box-arrow-left me-1"></i>Выйти</a>
+                            <a href="{% url 'accounts:logout' %}" class="link-dark text-decoration-none"><i class="bi bi-box-arrow-left me-1"></i>Выйти</a>
                         {% else %}
                             <a href="{% url 'accounts:login' %}" class="link-dark"><i class="bi bi-box-arrow-in-right me-1"></i>Войти</a>
                             <span class="mx-2 fw-light">|</span>
@@ -37,9 +35,24 @@
                     </div>
                 </div>
 
-                <div class="col-lg-auto col-12"></div>
-                <div class="col-lg-auto col-12"></div>
             </div>
+
+            {% if request.user.is_authenticated %}
+            <div class="mt-2">
+                <div class="row g-2">
+                    <div class="col-lg-auto col-12">
+                        <a href="{% url 'employees:create_employee' %}" class="link-primary text-decoration-none">Добавить работника</a>
+                    </div>
+                    <div class="col-lg-auto">
+                        <span class="d-lg-flex d-none fw-light">|</span>
+                    </div>
+                    <div class="col-lg-auto col-12">
+                        <a href="{% url 'employees:create_employee' %}" class="link-primary text-decoration-none">Добавить должность</a></div>
+                    <div class="col"></div>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
     </div>
 </section>

@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="p-5 mt-4 rounded bg-light shadow-sm">
+    <form action="{% url 'accounts:login' %}" method="post" novalidate>
+        {% csrf_token %}
 
+        {{ form.as_p }}
+
+        <input type="submit" value="Войти" class="btn btn-primary btn-primary-sm">
+    </form>
+</div>
 {% endblock %}
