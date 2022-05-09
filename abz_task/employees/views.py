@@ -39,7 +39,11 @@ def employees_list(request):
 
 
 def employee_details(request, employee_slug):
-    """Данных работника"""
+    """
+    Данные работника.
+
+    :param employee_slug: `Slug` конкретного работника.
+    """
 
     employee = sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
 
@@ -50,23 +54,39 @@ def employee_details(request, employee_slug):
 
 
 @login_required
+def create_employee(request):
+    """Создание работника"""
+
+    form = EmployeeEditForm(
+        request.POST or None,
+        request.FILES or None,
+    )
+
+    if form.is_valid():
+        employee = sv.save_employee_from_form(form)
+        messages.success(request, 'Работник создан')
+        return redirect(employee.get_absolute_url())
+
+    return render(request, 'employees/create_employee.html',
+                  {
+                      'form': form,
+                  })
+
+
+@login_required
 def edit_employee(request, employee_slug):
     """Изменение данных сотрудника"""
 
-    if request.POST:
-        form = EmployeeEditForm(
-            request.POST,
-            request.FILES,
-            instance=sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
-        )
-        if form.is_valid():
-            employee = sv.save_employee_from_form(form)
-            messages.success(request, 'Данные обновлены')
-            return redirect('employees:edit_employee', employee.slug)
-    else:
-        form = EmployeeEditForm(
-            instance=sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
-        )
+    form = EmployeeEditForm(
+        request.POST or None, request.FILES or None,
+        instance=sv.return_404_if_none(sv.get_employee_by({'slug': employee_slug}))
+    )
+
+    if form.is_valid():
+        employee = sv.save_employee_from_form(form)
+        messages.success(request, 'Данные обновлены')
+        # print(employee, employee.slug, employee.get_absolute_url())
+        return redirect(employee.get_absolute_url())
 
     return render(request, 'employees/edit_employee.html',
                   {

@@ -36,4 +36,4 @@ class RegisterView(AnonymousRequiredMixin, View):
             login(request, user)
             return redirect('employees:home')
 
-        return redirect('accounts:login')
+        return redirect('accounts:register')

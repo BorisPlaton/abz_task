@@ -56,14 +56,16 @@ def get_employees_by_keyword(keyword: str) -> Optional[QuerySet]:
             )
 
 
-def save_employee_from_form(form: EmployeeEditForm) -> Employee:
+def save_employee_from_form(form: EmployeeEditForm, commit: bool = True) -> Employee:
     """
     Сохраняет данные пользователя из формы.
 
     :param form: экземпляр `EmployeeEditForm` класса.
+    :param commit: Передается в `save()` метод.
     """
 
-    employee = form.save()
+    print(commit)
+    employee = form.save(commit)
 
     return employee
 
