@@ -5,7 +5,6 @@ from django.http import Http404
 
 from employees.forms import EmployeeEditForm
 from employees.models import Employee
-from employees.services.images import ProfilePhoto
 
 
 def return_404_if_none(item: Any) -> Any:
@@ -69,20 +68,6 @@ def save_employee_from_form(form: EmployeeEditForm) -> Employee:
     return employee
 
 
-def change_employee_photo(employee_photo: str) -> None:
-    """
-    Урезает загруженную фотографию работника до разрешенных размеров.
-
-    :param employee_photo: Название фотографии.
-    """
-
-    # Меняем только загруженные фотографии
-    if employee_photo != Employee._meta.get_field('employee_photo').default:
-        profile_pic = ProfilePhoto(employee_photo.path)
-        profile_pic.get_square_photo()
-        profile_pic.save_photo()
-
-
 def delete_employee_photo(employee) -> None:
     """
     Удаляет фото работника.
@@ -124,6 +109,8 @@ def sort_by_field_options(models: QuerySet, fields: list[str]) -> QuerySet:
     """
     Сортирует `models` по полям `options` в порядке возрастания.
 
+    Возвращает отсортированный QuerySet.
+
     :param models: `Queryset`.
     :param fields: поля, по которым нужно отсортировать `models`. Сортировка
         происходит в той последовательности, в которой лежат названия полей.
@@ -141,3 +128,16 @@ def delete_employee(employee_pk: int) -> bool:
     :param employee_pk: поле `primary key` записи.
     """
 
+    employee = Employee.objects.filter(pk=employee_pk)
+
+    if employee.exists():
+
+        workers = employee.first().get_children()
+        parent = employee.first().parent
+        if workers and parent:
+            workers.update(parent=parent)
+
+        employee.delete()
+        return True
+
+    return False

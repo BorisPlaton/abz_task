@@ -97,9 +97,8 @@ def delete_employee(request, employee_pk):
     :param employee_pk: id экземпляра.
     """
 
-    is_deleted = delete_employee(employee_pk)
+    sv.return_404_if_none(sv.delete_employee(employee_pk))
 
-    if is_deleted:
-        pass
+    messages.success(request, 'Работник был удалён')
 
-    return redirect('employees:employees_list')
+    return redirect('employees:home')

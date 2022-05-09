@@ -32,8 +32,8 @@ class Command(BaseCommand):
             '-e', '--employees',
             type=int,
             nargs='?',
-            const=5,
-            default=5,
+            const=50,
+            default=50,
             help="Количество сотрудников.",
         )
 
@@ -41,8 +41,8 @@ class Command(BaseCommand):
             '-p', '--positions',
             type=int,
             nargs='?',
-            const=5,
-            default=5,
+            const=10,
+            default=10,
             help="Количество должностей.",
         )
 

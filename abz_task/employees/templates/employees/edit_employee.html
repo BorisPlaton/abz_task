@@ -2,22 +2,6 @@
 
 {% block content %}
 
-<!-- Modal -->
-<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                Вы точно хотите удалить этого работника?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
-                <a href="{% url 'employees:delete_employee' employee.id %}" class="btn btn-danger btn-sm">Удалить</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="p-5 mt-4 rounded bg-light shadow-sm">
     <div class="row row-cols-1">
 
@@ -97,9 +81,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-end">
                     <input type="submit" value="Сохранить" class="btn btn-primary btn-primary-sm">
-                    <input type="button" value="Удалить работника" class="btn btn-outline-danger btn-outline-danger-sm" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal">
                 </div>
             </form>
         </div>

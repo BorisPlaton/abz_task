@@ -1,4 +1,8 @@
+import os
+
 from PIL import Image
+
+from employees.models import Employee
 
 
 class ProfilePhoto:
@@ -73,3 +77,41 @@ class ProfilePhoto:
     @property
     def width(self) -> int:
         return self.photo.width
+
+
+def delete_photo(employee: Employee) -> bool:
+    """
+    Удаляет фотографию работника экземпляра класса `Employee`.
+
+    Возвращает True, если модель фото было удалено, иначе False.
+
+    :param employee: экземпляр класса `Employee`.
+    """
+
+    try:
+        old_photo = Employee.objects.get(pk=employee.pk).employee_photo
+        old_photo_path = old_photo.path
+        new_photo = employee.employee_photo
+    except Employee.DoesNotExist:
+        pass
+    else:
+        # Если прошлое фото не является стандартным, тогда удаляем его.
+        if old_photo != Employee._meta.get_field('employee_photo').default and old_photo != new_photo:
+            os.remove(old_photo_path)
+            return True
+
+    return False
+
+
+def change_employee_photo(employee_photo: str) -> None:
+    """
+    Урезает загруженную фотографию работника до разрешенных размеров.
+
+    :param employee_photo: Название фотографии.
+    """
+
+    # Меняем только загруженные фотографии
+    if employee_photo != Employee._meta.get_field('employee_photo').default:
+        profile_pic = ProfilePhoto(employee_photo.path)
+        profile_pic.get_square_photo()
+        profile_pic.save_photo()

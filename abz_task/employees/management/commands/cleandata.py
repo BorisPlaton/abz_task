@@ -34,8 +34,7 @@ class Command(BaseCommand):
         if not (options['employees'] or options['positions']):
             self.__delete_data_from(Employee)
             self.__delete_data_from(Position)
-
-        self.stdout.write('Записи удалены')
+            self.stdout.write('Записи удалены')
 
     @staticmethod
     def __delete_data_from(table):

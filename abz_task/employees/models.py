@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from mptt.managers import TreeManager
 from mptt.models import TreeForeignKey, MPTTModel
 from unidecode import unidecode
 
@@ -18,6 +19,14 @@ class Position(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+#
+# class EmployeeQuerySet(TreeManager):
+#
+#     def delete(self):
+#         for employee in self.all():
+#             print(employee)
+#             employee.delete()
 
 
 class Employee(MPTTModel):
@@ -74,6 +83,8 @@ class Employee(MPTTModel):
         related_name='workers'
     )
 
+    # objects = EmployeeQuerySet()
+
     class MTTPMeta:
         ordering_insertion_by = ['first_name', 'second_name', 'patronymic']
 
@@ -85,15 +96,16 @@ class Employee(MPTTModel):
         return f"{self.second_name} {self.first_name} {self.patronymic}"
 
     def delete(self, using=None, keep_parents=False):
-        if self.workers and self.parent:
-            Employee.objects.filter(parent=self).update(parent=self.parent)
-        super().delete(using, keep_parents)
-        Employee.objects.rebuild()
+        if self.get_children() and self.parent:
+            self.get_children().update(parent=self.parent)
+        super(Employee, self).delete(using, keep_parents)
 
     def save(self, *args, **kwargs):
         # Устанавливаем уникальный slug
         super(Employee, self).save(*args, **kwargs)
-        Employee.objects.filter(pk=self.pk).update(slug=slugify(unidecode(f'{self.second_name} {self.first_name} {self.patronymic} {self.pk}')))
+        Employee.objects.filter(pk=self.pk).update(
+            slug=slugify(unidecode(f'{self.second_name} {self.first_name} {self.patronymic} {self.pk}'))
+        )
 
     def get_absolute_url(self):
         return reverse('employees:employee_details', args=[self.slug])

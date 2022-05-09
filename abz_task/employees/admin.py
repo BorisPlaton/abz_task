@@ -11,8 +11,8 @@ class EmployeeAdmin(MPTTModelAdmin):
         'slug',
     )
     list_display = (
-        'first_name',
         'second_name',
+        'first_name',
         'patronymic',
         'position',
         'payment',
