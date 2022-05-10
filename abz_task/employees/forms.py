@@ -50,3 +50,11 @@ class EmployeeEditForm(forms.ModelForm):
         self.fields['employee_photo'].widget.attrs.update({
             'class': 'form-control form-control-sm mt-2',
         })
+
+        if self.instance.pk:
+            self.fields['parent'].choices = [('', "---------")] + [
+                (
+                    record.pk,
+                    f"{record.level * '---'} {record.full_name}",
+                ) for record in self.instance.all_nodes_except_self_and_children
+            ]

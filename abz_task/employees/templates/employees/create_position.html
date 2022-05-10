@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-5 mt-4 rounded bg-light shadow-sm">
+    <div class="row row-cols-1">
+
+        <div class="col">
+
+            <form action="{% url 'employees:create_position' %}" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="d-flex">
+                            <span class="fw-bold me-2">Название:</span>{{ form.title }}
+                        </div>
+                        {% include 'includes/errors.html' with field=form.first_name %}
+                    </div>
+                    <div class="col-lg-7 d-flex justify-content-end">
+                        <input type="submit" value="Сохранить" class="btn btn-primary btn-primary-sm">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

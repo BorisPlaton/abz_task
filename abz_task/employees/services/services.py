@@ -1,7 +1,7 @@
 from typing import Optional, Any, Union
 
 from django.core.paginator import Paginator
-from django.db.models import QuerySet, Q, Model
+from django.db.models import QuerySet, Q
 from django.db.models.base import ModelBase
 from django.http import Http404
 
@@ -190,4 +190,3 @@ def delete_record_by_pk(model: ModelBase, pk: int) -> bool:
 
     record.delete()
     return True
-

@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.text import slugify
 from mptt.models import TreeForeignKey, MPTTModel
@@ -103,3 +104,12 @@ class Employee(MPTTModel):
 
     def get_absolute_url(self):
         return reverse('employees:employee_details', args=[self.slug])
+
+    @property
+    def full_name(self):
+        return f"{self.second_name} {self.first_name} {self.patronymic}"
+
+    @property
+    def all_nodes_except_self_and_children(self):
+        descendants = self.get_descendants(include_self=True).values_list('id', flat=True)
+        return Employee.objects.filter(~Q(pk__in=descendants)).all()
