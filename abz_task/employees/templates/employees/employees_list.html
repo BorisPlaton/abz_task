@@ -61,7 +61,7 @@
 {% endif %}
 
 <div class="mt-4">
-    {% include 'includes/pagination.html' with paginator=employees current_page=employees.number params=options %}
+    {% include 'includes/pagination.html' with paginator=employees pages=pages params=options %}
 </div>
 
 {% endblock %}

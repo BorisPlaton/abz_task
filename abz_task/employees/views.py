@@ -29,13 +29,15 @@ def employees_list(request):
         sv.get_employees_by_keyword(options.get('keyword')),
         [option for option in options if (options[option] and option != 'keyword')]
     )
+    paginator, pages = sv.get_model_paginator(employees, request.GET.get('page', 1), 100)
 
     return render(
         request,
         'employees/employees_list.html',
         {
-            'employees': sv.get_model_paginator(employees, request.GET.get('page', 1), 100),
             'options': options,
+            'employees': paginator,
+            'pages': pages
         }
     )
 
@@ -136,13 +138,14 @@ def delete_employee(request, employee_pk):
 def positions_list(request):
     """Показывает все существующие должности"""
 
+    paginator, pages = sv.get_model_paginator(Position, request.GET.get('page', 1), 100)
+
     return render(
         request,
         'employees/positions_list.html',
         {
-            'positions': sv.get_model_paginator(
-                Position, request.GET.get('page', 1), 100
-            )
+            'positions': paginator,
+            'pages': pages,
         }
     )
 

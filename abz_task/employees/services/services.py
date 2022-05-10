@@ -153,20 +153,30 @@ def delete_employee(employee_pk: int) -> bool:
     return False
 
 
-def get_model_paginator(model: Union[QuerySet, ModelBase], page_num: int, records_per_page: int) -> Paginator:
+def get_model_paginator(
+        model: Union[QuerySet, ModelBase],
+        page_num: int,
+        records_per_page: int,
+        on_each_side: int = 2,
+        on_ends: int = 1) -> tuple[Paginator, list]:
     """
     Возвращает объект `Paginator` модели `model`.
 
     :param model: Объект `QuerySet` или `ModelBase`, от которого получают `Paginator`.
     :param page_num: Номер страницы.
     :param records_per_page: Количество записей на одной странице.
+    :param on_ends: Количество страниц по сторонам на строке навигации.
+    :param on_each_side: Количество страниц по сторонам от текущей страницы на строке навигации.
     """
 
     if isinstance(model, ModelBase):
         model = model.objects.all()
 
-    paginator = Paginator(model, records_per_page).get_page(page_num)
-    return paginator
+    paginator = Paginator(model, records_per_page)
+    page_obj = paginator.get_page(page_num)
+    page_list = paginator.get_elided_page_range(page_num, on_each_side=on_each_side, on_ends=on_ends)
+
+    return page_obj, page_list
 
 
 def get_positions() -> QuerySet:

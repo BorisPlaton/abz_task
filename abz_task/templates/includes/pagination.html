@@ -10,8 +10,10 @@
                 </li>
             {% endif %}
 
-            {% for page in paginator.paginator.page_range %}
-                <li class="page-item {% if current_page == page %}active{% endif %}"><a class="page-link" href="{% url_parameters params page=page %}">{{ page }}</a></li>
+            {% for page in pages %}
+                <li class="page-item {% if paginator.number == page %}active{% endif %}">
+                    <a class="page-link" href="{% if page|is_int %}{% url_parameters params page=page %}{% endif %}">{{ page }}</a>
+                </li>
             {% endfor %}
 
             {% if paginator.has_next %}

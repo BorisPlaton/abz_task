@@ -1,3 +1,5 @@
+from typing import Any
+
 from django import template
 
 register = template.Library()
@@ -21,3 +23,18 @@ def url_parameters(params: dict = None, **kwargs) -> str:
         url_params = '?' + '&'.join(params_list)
 
     return url_params
+
+
+@register.filter
+def is_int(value: Any) -> bool:
+    """
+    Проверяет что значение является числом.
+
+    :param value: Любое значение.
+    """
+    try:
+        int(value)
+    except TypeError:
+        return False
+    else:
+        return True
