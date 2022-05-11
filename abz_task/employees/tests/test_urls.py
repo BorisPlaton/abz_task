@@ -7,7 +7,7 @@ from django.urls import reverse
 from employees.models import Employee, Position
 
 
-class URLStatusTests(TestCase):
+class URLAnonymousStatusTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):

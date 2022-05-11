@@ -1,6 +1,7 @@
 from typing import Any
 
 from django import template
+from django.utils.text import slugify
 
 register = template.Library()
 
@@ -15,10 +16,10 @@ def url_parameters(params: dict = None, **kwargs) -> str:
     """
 
     url_params = ''
-    if params and kwargs:
+    if params:
         kwargs.update(params)
 
-    params_list = [f'{key}={value}' for key, value in kwargs.items() if value]
+    params_list = [f'{key}={slugify(value)}' for key, value in kwargs.items() if value]
     if params_list:
         url_params = '?' + '&'.join(params_list)
 
@@ -26,15 +27,11 @@ def url_parameters(params: dict = None, **kwargs) -> str:
 
 
 @register.filter
-def is_int(value: Any) -> bool:
+def is_int(value: Any = None) -> bool:
     """
     Проверяет что значение является числом.
 
     :param value: Любое значение.
     """
-    try:
-        int(value)
-    except TypeError:
-        return False
-    else:
-        return True
+
+    return isinstance(value, int)
