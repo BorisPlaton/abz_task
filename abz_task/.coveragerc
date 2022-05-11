@@ -3,9 +3,15 @@ omit =
     */__init__.py
     */migrations/*
     */tests/*
+    */settings.py,
+    */urls.py,
+    manage.py,
 
 [report]
 omit =
     */__init__.py,
     */migrations/*,
     */tests/*,
+    */settings.py,
+    */urls.py,
+    manage.py,
