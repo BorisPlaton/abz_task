@@ -10,9 +10,11 @@ django-mptt = "*"
 pillow = "*"
 unidecode = "*"
 faker = "*"
+psycopg2 = "*"
 
 [dev-packages]
 flake8 = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.10"

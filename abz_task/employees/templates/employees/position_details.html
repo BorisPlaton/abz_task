@@ -51,12 +51,12 @@
                     </div>
                 </div>
                 {% if request.user.is_authenticated %}
-                <div class="col-12">
-                    <input type="button" value="Удалить категорию" class="btn btn-outline-danger btn-outline-danger-sm"
-                           data-bs-toggle="modal" data-bs-target="#deletePositionModal">
-                    <input type="button" value="Изменить название" class="btn btn-primary btn-outline-danger-sm"
-                           data-bs-toggle="modal" data-bs-target="#EditEmployeeModal">
-                </div>
+                    <div class="col-12">
+                        <input type="button" value="Удалить категорию" class="btn btn-outline-danger btn-outline-danger-sm"
+                               data-bs-toggle="modal" data-bs-target="#deletePositionModal">
+                        <input type="button" value="Изменить название" class="btn btn-primary btn-outline-danger-sm"
+                               data-bs-toggle="modal" data-bs-target="#EditEmployeeModal">
+                    </div>
                 {% endif %}
 
             </div>

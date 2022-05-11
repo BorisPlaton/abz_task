@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -150,7 +151,6 @@ def positions_list(request):
     )
 
 
-@login_required
 def position_details(request, position_pk):
     """
     Страница должности.
@@ -159,6 +159,7 @@ def position_details(request, position_pk):
     """
 
     position = sv.return_404_if_none(sv.get_by(Position, {'pk': position_pk}))
+
     form = EditPositionForm(request.POST or None, instance=position)
 
     if form.is_valid():
